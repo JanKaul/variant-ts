@@ -1,0 +1,45 @@
+{
+  "name": "variant-ts",
+  "version": "0.0.1",
+  "description": "Variant, Option and Result types for Typescript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "serve": "node dist/index.js",
+    "build": "rollup --config",
+    "test": "web-test-runner \"test/**/*.test.js\" \"src/**/*.test.js\" --node-resolve"
+  },
+  "keywords": [
+    "variant",
+    "enum",
+    "result",
+    "option"
+  ],
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanKaul/variant-ts.git"
+  },
+  "author": "Jan Kaul",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/JanKaul/variant-ts/issues"
+  },
+  "homepage": "https://github.com/JanKaul/variant-ts#readme",
+  "dependencies": {
+    "ts-pattern": "^4.0.5"
+  },
+  "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^9.0.2",
+    "@web/test-runner": "^0.15.0",
+    "rollup": "^3.2.5",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5"
+  }
+}

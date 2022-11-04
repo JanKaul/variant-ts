@@ -5,7 +5,7 @@ Variant, Option and Result types for Typescript
 ## Variants
 
 ```typescript
-import { Variant, variant, pattern } from "matchingvariants";
+import { Variant, variant, pattern } from "variant-ts";
 import { match } form "ts-pattern";
 
 type Connection = Variant<"IPV4", string> | Variant<"IPV6", string>;
@@ -25,7 +25,7 @@ match(con2)
 ## Options
 
 ```typescript
-import { none, some } from "matchingvariants";
+import { none, some } from "variant-ts";
 
 const one = some("foo");
 const two = none();

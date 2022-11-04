@@ -9,19 +9,19 @@ export type Result<T, E> = Ok<T> | Err<E>
 
 class BaseResult<S extends string, T> extends Variant<S, T> {
     flatMap<V, E>(op: (a: T) => Result<V, E>): Result<V, E> {
-        return match(this as unknown as Result<T, E>)
+        return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => op(res.value))
             .with(pattern("err"), (res) => res)
             .exhaustive()
     }
     map<V, E>(op: (a: T) => V): Result<V, E> {
-        return match(this as unknown as Result<T, E>)
+        return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => ok<V, E>(op(res.value)))
             .with(pattern("err"), (res) => res)
             .exhaustive()
     }
     async asyncMap<V, E>(op: (a: T) => Promise<V>): Promise<Result<V, E>> {
-        return await match(this as unknown as Result<T, E>)
+        return await match(this as Result<T, E>)
             .with(pattern("ok"), async (res) => ok<V, E>(await op(res.value)))
             .with(pattern("err"), async (res) => res)
             .exhaustive()
@@ -39,7 +39,7 @@ class BaseResult<S extends string, T> extends Variant<S, T> {
             .exhaustive()
     }
     getWithDefault<E>(def: T): T {
-        return match(this as unknown as Result<T, E>)
+        return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => res.value)
             .with(pattern("err"), (_) => def)
             .exhaustive()

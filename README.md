@@ -1,4 +1,4 @@
-# MatchingVariants
+# Variant-ts
 
 Variant, Option and Result types for Typescript
 
@@ -40,7 +40,7 @@ expect(four.value).to.equal(undefined);
 ## Results
 
 ```typescript
-import { err, ok } from "matchingvariants";
+import { err, ok } from "variant-ts";
 
 const one = ok("foo");
 const two = err("error");

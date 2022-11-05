@@ -3,11 +3,11 @@ import { pattern, Variant } from "./variant";
 
 type Some<T> = BaseOption<"some", T>;
 
-type None = BaseOption<"none", undefined>;
+type None<T> = BaseOption<"none", T>;
 
-export type Option<T> = Some<T> | None
+export type Option<T> = Some<T> | None<T>
 
-class BaseOption<V extends string, T> extends Variant<V, T> {
+class BaseOption<V, T> extends Variant<V, T> {
     flatMap<S>(op: (a: T) => Option<S>): Option<S> {
         return match(this as Option<T>)
             .with(pattern("some"), (res) => op(res.value))
@@ -27,7 +27,7 @@ class BaseOption<V extends string, T> extends Variant<V, T> {
             .exhaustive()
     }
     forEach<T>(op: (a: T) => void): void {
-        match(this as Option<T>)
+        match(this as unknown as Option<T>)
             .with(pattern("some"), (res) => op(res.value))
             .with(pattern("none"), (_) => _)
             .exhaustive()
@@ -36,6 +36,12 @@ class BaseOption<V extends string, T> extends Variant<V, T> {
         return match(this as Option<T>)
             .with(pattern("some"), (res) => res.value)
             .with(pattern("none"), (_) => def)
+            .exhaustive()
+    }
+    toUndefined(): T | undefined {
+        return match(this as Option<T>)
+            .with(pattern("some"), (res) => res.value)
+            .with(pattern("none"), (_) => undefined)
             .exhaustive()
     }
 }

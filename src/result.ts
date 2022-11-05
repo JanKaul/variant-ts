@@ -7,7 +7,7 @@ type Err<E> = BaseResult<"err", E>;
 
 export type Result<T, E> = Ok<T> | Err<E>
 
-class BaseResult<S extends string, T> extends Variant<S, T> {
+class BaseResult<S, T> extends Variant<S, T> {
     flatMap<V, E>(op: (a: T) => Result<V, E>): Result<V, E> {
         return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => op(res.value))

@@ -1,4 +1,4 @@
-export class Variant<T extends string, V> {
+export class Variant<T, V> {
     tag: T;
     value: V;
     constructor(tag: T, value: V) {
@@ -7,14 +7,14 @@ export class Variant<T extends string, V> {
     }
 }
 
-function construct<T extends string, V, U>(tag: T, value: V): U {
+function construct<T, V, U>(tag: T, value: V): U {
     return new Variant(tag, value) as U
 }
 
 export function variant<U>() {
-    return construct as <T extends string, V>(tag: T, value: V) => U
+    return construct as <T, V>(tag: T, value: V) => U
 }
 
-export function pattern<T extends string>(tag: T) {
+export function pattern<T>(tag: T) {
     return { tag }
 }

@@ -1,4 +1,5 @@
 import { match } from 'ts-pattern';
+import { none, some, Option } from './option';
 import { Variant, pattern } from './variant';
 
 type Ok<T> = BaseResult<"ok", T>;
@@ -42,6 +43,12 @@ class BaseResult<S, T> extends Variant<S, T> {
         return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => res.value)
             .with(pattern("err"), (_) => def)
+            .exhaustive()
+    }
+    ok<E>(): Option<T> {
+        return match(this as Result<T, E>)
+            .with(pattern("ok"), (res) => some<T>(res.value))
+            .with(pattern("err"), (_) => none<T>())
             .exhaustive()
     }
 }

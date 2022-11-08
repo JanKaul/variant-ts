@@ -27,8 +27,8 @@ class BaseOption<V, T> extends Variant<V, T> {
             .with(pattern("none"), async (_) => none<S>())
             .exhaustive()
     }
-    forEach<T>(op: (a: T) => void): void {
-        match(this as unknown as Option<T>)
+    forEach(op: (a: T) => void): void {
+        match(this as Option<T>)
             .with(pattern("some"), (res) => op(res.value))
             .with(pattern("none"), (_) => _)
             .exhaustive()

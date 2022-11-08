@@ -27,14 +27,14 @@ class BaseResult<S, T> extends Variant<S, T> {
             .with(pattern("err"), async (res) => res)
             .exhaustive()
     }
-    forEach<T, E>(op: (a: T) => void): void {
-        match(this as unknown as Result<T, E>)
+    forEach<E>(op: (a: T) => void): void {
+        match(this as Result<T, E>)
             .with(pattern("ok"), (res) => op(res.value))
             .with(pattern("err"), (_) => _)
             .exhaustive()
     }
-    async toPromise<T, E>(): Promise<T> {
-        return await match(this as unknown as Result<T, E>)
+    async toPromise<E>(): Promise<T> {
+        return await match(this as Result<T, E>)
             .with(pattern("ok"), x => Promise.resolve(x.value))
             .with(pattern("err"), x => Promise.reject(x.value))
             .exhaustive()

@@ -7,14 +7,14 @@ export class Variant<T, V> {
     }
 }
 
-function construct<T, V, U>(tag: T, value: V): U {
+export function variant<U>(tag: any, value: any): U {
     return new Variant(tag, value) as U
 }
 
-export function variant<U>() {
-    return construct as <T, V>(tag: T, value: V) => U
+type Pattern<T> = {
+    tag: T
 }
 
-export function pattern<T>(tag: T) {
+export function pattern<T>(tag: T): Pattern<T> {
     return { tag }
 }

@@ -5,21 +5,47 @@ Variant, Option and Result types for Typescript
 ## Variants
 
 ```typescript
+import { Variant, variant } from "variant-ts";
+
+type Connection =
+  | Variant<"IPV4", [number, number, number, number]>
+  | Variant<"IPV6", string>;
+
+let ip = variant<Connection>("IPV4", [127, 0, 0, 1]);
+```
+
+Variants are very handy when used together with reducers:
+
+```typescript
 import { Variant, variant, pattern } from "variant-ts";
 import { match } form "ts-pattern";
 
-type Connection = Variant<"IPV4", string> | Variant<"IPV6", string>;
+type State = {
+    name: string,
+    age: number,
+    messages: string[]
+}
 
-let connection = variant<Connection>();
+type Action =
+    Variant<"ChangeName", string>
+    | Variant<"ChangeAge", number>
+    | Variant<"AddMessage", string>
 
-let con1 = connection("IPV4", "127.0.0.1");
+function reducer(state: State, action: Action): State {
+    return match(action)
+        .with(pattern("ChangeName"), res => { return { name: res.value, ...state } })
+        .with(pattern("ChangeAge"), res => { return { age: res.value, ...state } })
+        .with(pattern("AddMessage"), res => { return { messages: [...state.messages, res.value], ...state } })
+        .exhaustive()
+}
 
-let con2 = connection("IPV6", "2001:0db8:85a3:08d3:1319:8a2e:0370:7344");
+let initial_state = {
+    name: "John Doe",
+    age: 24,
+    messages: ["Hey, how are you?", "See you"]
+}
 
-match(con2)
-    .with(pattern("IPV4"), res => {connect_ipv4(res.value)})
-    .with(pattern("IPV6"), res => {connect_ipv6(res.value)})
-    .exhaustive()
+let new_state = reducer(initial_state, variant<Action>("AddMessage", "Variants are awesome"))
 ```
 
 ## Options

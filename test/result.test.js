@@ -9,7 +9,7 @@ describe("create result", () => {
         const three = one.map(x => x.concat("bar"))
         const four = two.map(x => x.concat("bar"))
 
-        expect(three.value).to.equal("foobar")
-        expect(four.value).to.equal("error")
+        expect(three.val).to.equal("foobar")
+        expect(four.val).to.equal("error")
     })
 });

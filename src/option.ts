@@ -11,43 +11,43 @@ export type Option<T> = Some<T> | None<T>
 class BaseOption<V, T> extends Variant<V, T> {
     flatMap<S>(op: (a: T) => Option<S>): Option<S> {
         return match(this as Option<T>)
-            .with(pattern("some"), (res) => op(res.value))
+            .with(pattern("some"), (res) => op(res.val))
             .with(pattern("none"), (_) => none<S>())
             .exhaustive()
     }
     map<S>(op: (a: T) => S): Option<S> {
         return match(this as Option<T>)
-            .with(pattern("some"), (res) => some(op(res.value)))
+            .with(pattern("some"), (res) => some(op(res.val)))
             .with(pattern("none"), (_) => none<S>())
             .exhaustive()
     }
     async asyncMap<S>(op: (a: T) => Promise<S>): Promise<Option<S>> {
         return await match(this as Option<T>)
-            .with(pattern("some"), async (res) => some(await op(res.value)))
+            .with(pattern("some"), async (res) => some(await op(res.val)))
             .with(pattern("none"), async (_) => none<S>())
             .exhaustive()
     }
     forEach(op: (a: T) => void): void {
         match(this as Option<T>)
-            .with(pattern("some"), (res) => op(res.value))
+            .with(pattern("some"), (res) => op(res.val))
             .with(pattern("none"), (_) => _)
             .exhaustive()
     }
     getWithDefault(def: T): T {
         return match(this as Option<T>)
-            .with(pattern("some"), (res) => res.value)
+            .with(pattern("some"), (res) => res.val)
             .with(pattern("none"), (_) => def)
             .exhaustive()
     }
     toUndefined(): T | undefined {
         return match(this as Option<T>)
-            .with(pattern("some"), (res) => res.value)
+            .with(pattern("some"), (res) => res.val)
             .with(pattern("none"), (_) => undefined)
             .exhaustive()
     }
     okOr<E>(e: E): Result<T, E> {
         return match(this as Option<T>)
-            .with(pattern("some"), (res) => ok<T, E>(res.value))
+            .with(pattern("some"), (res) => ok<T, E>(res.val))
             .with(pattern("none"), (_) => err<T, E>(e))
             .exhaustive()
     }

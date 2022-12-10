@@ -1,14 +1,14 @@
 export class Variant<T, V> {
     tag: T;
-    value: V;
-    constructor(tag: T, value: V) {
+    val: V;
+    constructor(tag: T, val: V) {
         this.tag = tag;
-        this.value = value
+        this.val = val
     }
 }
 
-export function variant<U>(tag: any, value: any): U {
-    return new Variant(tag, value) as U
+export function variant<U>(tag: any, val: any): U {
+    return new Variant(tag, val) as U
 }
 
 type Pattern<T> = {

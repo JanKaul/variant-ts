@@ -33,9 +33,9 @@ type Action =
 
 function reducer(state: State, action: Action): State {
     return match(action)
-        .with(pattern("ChangeName"), res => { return { name: res.value, ...state } })
-        .with(pattern("ChangeAge"), res => { return { age: res.value, ...state } })
-        .with(pattern("AddMessage"), res => { return { messages: [...state.messages, res.value], ...state } })
+        .with(pattern("ChangeName"), res => { return { name: res.val, ...state } })
+        .with(pattern("ChangeAge"), res => { return { age: res.val, ...state } })
+        .with(pattern("AddMessage"), res => { return { messages: [...state.messages, res.val], ...state } })
         .exhaustive()
 }
 
@@ -59,8 +59,8 @@ const two = none();
 const three = one.map((x) => x.concat("bar"));
 const four = two.map((x) => x.concat("bar"));
 
-expect(three.value).to.equal("foobar");
-expect(four.value).to.equal(undefined);
+expect(three.val).to.equal("foobar");
+expect(four.val).to.equal(undefined);
 ```
 
 ## Results
@@ -74,6 +74,6 @@ const two = err("error");
 const three = one.map((x) => x.concat("bar"));
 const four = two.map((x) => x.concat("bar"));
 
-expect(three.value).to.equal("foobar");
-expect(four.value).to.equal("error");
+expect(three.val).to.equal("foobar");
+expect(four.val).to.equal("error");
 ```

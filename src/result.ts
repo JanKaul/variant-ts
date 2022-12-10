@@ -51,11 +51,11 @@ class BaseResult<S, T> extends Variant<S, T> {
             .with(pattern("err"), (_) => none<T>())
             .exhaustive()
     }
-    try<E>(): T {
-        return match(this as Result<T, E>)
+    try<V>(): V {
+        return match(this as Result<T, unknown>)
             .with(pattern("ok"), (res) => res.val)
             .with(pattern("err"), (res) => { throw new Error(res.val.toString()); return res.val })
-            .exhaustive() as T
+            .exhaustive() as V
     }
 }
 

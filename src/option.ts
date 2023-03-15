@@ -4,9 +4,9 @@ import { pattern, Variant } from "./variant";
 
 type Some<T> = BaseOption<"some", T>;
 
-type None<T> = BaseOption<"none", T>;
+type None = BaseOption<"none", never>;
 
-export type Option<T> = Some<T> | None<T>
+export type Option<T> = Some<T> | None
 
 class BaseOption<V, T> extends Variant<V, T> {
     flatMap<S>(op: (a: T) => Option<S>): Option<S> {
@@ -33,10 +33,10 @@ class BaseOption<V, T> extends Variant<V, T> {
             .with(pattern("none"), (_) => _)
             .exhaustive()
     }
-    getWithDefault(def: T): T {
+    getWithDefault(def: unknown): T {
         return match(this as Option<T>)
             .with(pattern("some"), (res) => res.val)
-            .with(pattern("none"), (_) => def)
+            .with(pattern("none"), (_) => def as T)
             .exhaustive()
     }
     toUndefined(): T | undefined {
@@ -58,10 +58,9 @@ export function some<T>(arg: T): Option<T> {
 }
 
 export function none<T>(): Option<T> {
-    return new BaseOption("none", undefined)
+    return new BaseOption("none", undefined as never)
 }
 
 export function nullable<T>(val: T | undefined | null): Option<T> {
     return (val == null ? none<T>() : some(val))
 }
-

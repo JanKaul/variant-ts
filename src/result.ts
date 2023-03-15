@@ -2,13 +2,13 @@ import { match } from 'ts-pattern';
 import { none, some, Option } from './option';
 import { Variant, pattern } from './variant';
 
-type Ok<T> = BaseResult<"ok", T>;
+type Ok<T> = BaseResult<"ok", T, never>;
 
-type Err<E> = BaseResult<"err", E>;
+type Err<E> = BaseResult<"err", never, E>;
 
 export type Result<T, E> = Ok<T> | Err<E>
 
-class BaseResult<S, T> extends Variant<S, T> {
+class BaseResult<S, T, E> extends Variant<S, T | E> {
     flatMap<V, E>(op: (a: T) => Result<V, E>): Result<V, E> {
         return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => op(res.val))
@@ -60,10 +60,10 @@ class BaseResult<S, T> extends Variant<S, T> {
 }
 
 export function ok<T, E>(arg: T): Result<T, E> {
-    return new BaseResult("ok", arg)
+    return new BaseResult<"ok", T, never>("ok", arg)
 }
 
 export function err<T, E>(arg: E): Result<T, E> {
-    return new BaseResult("err", arg)
+    return new BaseResult<"err", never, E>("err", arg)
 }
 

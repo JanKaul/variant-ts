@@ -13,3 +13,16 @@ describe("create option", () => {
         expect(four.val).to.equal(undefined)
     })
 });
+
+describe("getWithDefault", () => {
+    it('', () => {
+        const one = some("foo")
+        const two = none()
+
+        const three = one.getWithDefault("bar")
+        const four = two.getWithDefault("bar")
+
+        expect(three).to.equal("foo")
+        expect(four).to.equal("bar")
+    })
+});

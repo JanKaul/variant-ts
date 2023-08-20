@@ -9,7 +9,7 @@ type Err<E> = BaseResult<"err", never, E>;
 export type Result<T, E> = Ok<T> | Err<E>
 
 class BaseResult<S, T, E> extends Variant<S, T | E> {
-    flatMap<V, E>(op: (a: T) => Result<V, E>): Result<V, E> {
+    andThen<V, E>(op: (a: T) => Result<V, E>): Result<V, E> {
         return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => op(res.val))
             .with(pattern("err"), (res) => res)
@@ -39,7 +39,7 @@ class BaseResult<S, T, E> extends Variant<S, T | E> {
             .with(pattern("err"), x => Promise.reject(x.val))
             .exhaustive()
     }
-    getWithDefault<E>(def: T): T {
+    unwrapOr<E>(def: T): T {
         return match(this as Result<T, E>)
             .with(pattern("ok"), (res) => res.val)
             .with(pattern("err"), (_) => def)

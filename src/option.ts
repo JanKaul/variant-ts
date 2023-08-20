@@ -9,7 +9,7 @@ type None = BaseOption<"none", never>;
 export type Option<T> = Some<T> | None
 
 class BaseOption<V, T> extends Variant<V, T> {
-    flatMap<S>(op: (a: T) => Option<S>): Option<S> {
+    andThen<S>(op: (a: T) => Option<S>): Option<S> {
         return match(this as Option<T>)
             .with(pattern("some"), (res) => op(res.val))
             .with(pattern("none"), (_) => none<S>())
@@ -33,7 +33,7 @@ class BaseOption<V, T> extends Variant<V, T> {
             .with(pattern("none"), (_) => _)
             .exhaustive()
     }
-    getWithDefault(def: unknown): T {
+    unwrapOr(def: unknown): T {
         return match(this as Option<T>)
             .with(pattern("some"), (res) => res.val)
             .with(pattern("none"), (_) => def as T)

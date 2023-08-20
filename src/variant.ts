@@ -7,7 +7,7 @@ export class Variant<T, V> {
     }
 }
 
-export function variant<U extends Variant<unknown, unknown>>(tag: unknown, val: unknown): U {
+export function variant<U extends Variant<unknown, unknown>>(tag: U["tag"], val: U["val"]): U {
     return new Variant(tag, val) as U
 }
 

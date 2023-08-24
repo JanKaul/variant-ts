@@ -1,6 +1,5 @@
-import { match } from 'ts-pattern';
 import { ok, Result, err } from './result';
-import { pattern, Variant } from "./variant";
+import { Variant } from "./variant";
 
 type Some<T> = BaseOption<"some", T>;
 
@@ -10,46 +9,58 @@ export type Option<T> = Some<T> | None
 
 class BaseOption<V, T> extends Variant<V, T> {
     andThen<S>(op: (a: T) => Option<S>): Option<S> {
-        return match(this as Option<T>)
-            .with(pattern("some"), (res) => op(res.val))
-            .with(pattern("none"), (_) => none<S>())
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return op(this.val);
+            case "none":
+                return none();
+        }
     }
     map<S>(op: (a: T) => S): Option<S> {
-        return match(this as Option<T>)
-            .with(pattern("some"), (res) => some(op(res.val)))
-            .with(pattern("none"), (_) => none<S>())
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return some(op(this.val));
+            case "none":
+                return none();
+        }
     }
     async asyncMap<S>(op: (a: T) => Promise<S>): Promise<Option<S>> {
-        return await match(this as Option<T>)
-            .with(pattern("some"), async (res) => some(await op(res.val)))
-            .with(pattern("none"), async (_) => none<S>())
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return some(await op(this.val));
+            case "none":
+                return none();
+        }
     }
     forEach(op: (a: T) => void): void {
-        match(this as Option<T>)
-            .with(pattern("some"), (res) => op(res.val))
-            .with(pattern("none"), (_) => _)
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                op(this.val);
+        }
     }
     unwrapOr(def: unknown): T {
-        return match(this as Option<T>)
-            .with(pattern("some"), (res) => res.val)
-            .with(pattern("none"), (_) => def as T)
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return this.val;
+            case "none":
+                return def as T;
+        }
     }
     toUndefined(): T | undefined {
-        return match(this as Option<T>)
-            .with(pattern("some"), (res) => res.val)
-            .with(pattern("none"), (_) => undefined)
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return this.val;
+            case "none":
+                return undefined;
+        }
     }
     okOr<E>(e: E): Result<T, E> {
-        return match(this as Option<T>)
-            .with(pattern("some"), (res) => ok<T, E>(res.val))
-            .with(pattern("none"), (_) => err<T, E>(e))
-            .exhaustive()
+        switch ((this as Option<T>).tag) {
+            case "some":
+                return ok(this.val);
+            case "none":
+                return err(e);
+        }
     }
 }
 

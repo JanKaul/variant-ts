@@ -1,6 +1,6 @@
 {
   "name": "variant-ts",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "Variant, Option and Result types for Typescript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,9 +29,6 @@
     "url": "https://github.com/JanKaul/variant-ts/issues"
   },
   "homepage": "https://github.com/JanKaul/variant-ts#readme",
-  "dependencies": {
-    "ts-pattern": "^5.0.1"
-  },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@rollup/plugin-commonjs": "^25.0.4",

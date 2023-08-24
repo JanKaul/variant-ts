@@ -19,8 +19,8 @@ describe("getWithDefault", () => {
         const one = some("foo")
         const two = none()
 
-        const three = one.getWithDefault("bar")
-        const four = two.getWithDefault("bar")
+        const three = one.unwrapOr("bar")
+        const four = two.unwrapOr("bar")
 
         expect(three).to.equal("foo")
         expect(four).to.equal("bar")

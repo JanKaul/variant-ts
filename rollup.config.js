@@ -9,6 +9,6 @@ export default {
         format: 'es'
     },
     plugins: [nodeResolve({ browser: true, preferBuiltins: false }), commonjs(), typescript({
-        target: "es2017", declaration: true, outDir: "dist", esModuleInterop: true
+        target: "es2020", declaration: true, outDir: "dist", esModuleInterop: true
     })]
 };
